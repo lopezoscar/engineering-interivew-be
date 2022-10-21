@@ -34,10 +34,12 @@ You will be creating an API for a task application.
 
 ## API Design
 
-1. GET /task
-2. POST /task
-3. PATCH /task
-4. POST /login
+1. GET /tasks
+2. GET /tasks/:id
+3. POST /tasks
+4. PATCH /tasks:/id
+5. DELETE /tasks/:id
+5. POST /login
 
 ## Model
 
@@ -61,3 +63,7 @@ JWT
 2. routes (endpoint handlers)
 3. services (business logic)
 4. models (database access and third party)
+5. errors (error objects)
+
+# linter
+standardjs
