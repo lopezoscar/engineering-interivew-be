@@ -31,3 +31,33 @@ You will be creating an API for a task application.
 
 - Apollo Server GraphQL
 - Logging
+
+## API Design
+
+1. GET /task
+2. POST /task
+3. PATCH /task
+4. POST /login
+
+## Model
+
+```
+Task Schema
+{
+   _id: ObjectId,
+   title: string,
+   description: string,
+   status: string
+}
+
+```
+
+## AuthN/Z
+JWT
+
+## Architecture
+
+1. app.js
+2. routes (endpoint handlers)
+3. services (business logic)
+4. models (database access and third party)

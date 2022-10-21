@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  dynamo-local:
+    container_name: dynamo_local
+    hostname: dynamo
+    image: instructure/dynamo-local-admin
+    ports:
+      - 8000:8000
+      - 8001:8001
