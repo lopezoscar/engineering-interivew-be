@@ -2,7 +2,7 @@ const Joi = require('joi')
 const { StatusCodes } = require('http-status-codes')
 const TaskService = require('../../services/task-service')
 const ValidationError = require('../../errors/ValidationError')
-const errs = require('restify-errors')
+const createError = require('http-errors')
 
 function validate ({ schema, data }) {
   const { error } = schema.validate(data)
@@ -26,13 +26,13 @@ class TaskRouter {
         validate({ schema, data: req.params })
         const task = await this.taskService.getTaskById({ taskId: req.params.id })
         console.log('req.params', req.params)
-        return res.send(StatusCodes.OK, task)
+        return res.status(StatusCodes.OK).send(task)
       } catch (error) {
         console.log(error)
         if (error instanceof ValidationError) {
-          return next(new errs.BadRequestError(error.message))
+          return next(new createError.BadRequest(error.message))
         }
-        return next(new errs.InternalServerError(error))
+        return next(new createError.InternalServerError(error))
       }
     }
   }
@@ -45,16 +45,16 @@ class TaskRouter {
     })
     return async (req, res, next) => {
       try {
-        console.log('req.params', req.params)
-        validate({ schema, data: req.params })
-        const tasks = await this.taskService.getTasks(req.params)
-        return res.send(StatusCodes.OK, tasks)
+        console.log('req.query', req.query)
+        validate({ schema, data: req.query })
+        const tasks = await this.taskService.getTasks(req.query)
+        return res.status(StatusCodes.OK).send(tasks)
       } catch (error) {
         console.log(error)
         if (error instanceof ValidationError) {
-          return next(new errs.BadRequestError(error.message))
+          return next(new createError.BadRequest(error.message))
         }
-        return next(new errs.InternalServerError(error))
+        return next(new createError.InternalServerError(error))
       }
     }
   }
@@ -74,13 +74,13 @@ class TaskRouter {
         const task = await this.taskService.createTask({
           title, description, status
         })
-        return res.send(StatusCodes.CREATED, task)
+        return res.status(StatusCodes.CREATED).send(task)
       } catch (error) {
         console.log(error)
         if (error instanceof ValidationError) {
-          return next(new errs.BadRequestError(error.message))
+          return next(new createError.BadRequest(error.message))
         }
-        return next(new errs.InternalServerError(error))
+        return next(new createError.InternalServerError(error))
       }
     }
   }
@@ -102,13 +102,13 @@ class TaskRouter {
         const task = await this.taskService.updateTask({
           id, title, description, status
         })
-        return res.send(StatusCodes.OK, task)
+        return res.status(StatusCodes.OK).send(task)
       } catch (error) {
         console.log(error)
         if (error instanceof ValidationError) {
-          return next(new errs.BadRequestError(error.message))
+          return next(new createError.BadRequest(error.message))
         }
-        return next(new errs.InternalServerError(error))
+        return next(new createError.InternalServerError(error))
       }
     }
   }
@@ -121,14 +121,14 @@ class TaskRouter {
       try {
         validate({ schema, data: req.params })
         const task = await this.taskService.deleteTask({ taskId: req.params.id })
-        console.log('req.params', req.params)
-        return res.send(StatusCodes.OK, task)
+        console.log('req.params', req.query)
+        return res.status(StatusCodes.OK).send(task)
       } catch (error) {
         console.log(error)
         if (error instanceof ValidationError) {
-          return next(new errs.BadRequestError(error.message))
+          return next(new createError.BadRequest(error.message))
         }
-        return next(new errs.InternalServerError(error))
+        return next(new createError.InternalServerError(error))
       }
     }
   }

@@ -1,20 +1,23 @@
-const restify = require('restify')
+const express = require('express')
+const bodyParser = require('body-parser')
+
 const TasksRouter = require('./src/routes/tasks/tasks-router')
 
 function createRestServer ({ db }) {
-  const server = restify.createServer()
-  server.use(restify.queryParser())
-  server.use(restify.jsonBodyParser({ mapParams: false }))
+  const app = express()
+  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(bodyParser.json())
+  app.disable('x-powered-by')
 
   const taskRouter = new TasksRouter({ db })
 
-  server.get('/tasks', taskRouter.getTasks())
-  server.get('/tasks/:id', taskRouter.getTaskById())
-  server.post('/tasks', taskRouter.createTask())
-  server.patch('/tasks/:id', taskRouter.updateTask())
-  server.del('/tasks/:id', taskRouter.deleteTask())
+  app.get('/tasks', taskRouter.getTasks())
+  app.get('/tasks/:id', taskRouter.getTaskById())
+  app.post('/tasks', taskRouter.createTask())
+  app.patch('/tasks/:id', taskRouter.updateTask())
+  app.delete('/tasks/:id', taskRouter.deleteTask())
 
-  return server
+  return app
 }
 
 module.exports = createRestServer
