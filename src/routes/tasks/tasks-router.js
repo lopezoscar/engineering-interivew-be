@@ -24,7 +24,8 @@ class TaskRouter {
     return async (req, res, next) => {
       try {
         validate({ schema, data: req.params })
-        const task = await this.taskService.getTaskById({ taskId: req.params.id })
+        const userId = req.auth.userId
+        const task = await this.taskService.getTaskById({ taskId: req.params.id, userId })
         console.log('req.params', req.params)
         return res.status(StatusCodes.OK).send(task)
       } catch (error) {
@@ -47,7 +48,8 @@ class TaskRouter {
       try {
         console.log('req.query', req.query)
         validate({ schema, data: req.query })
-        const tasks = await this.taskService.getTasks(req.query)
+        const userId = req.auth.userId
+        const tasks = await this.taskService.getTasks({ ...req.query, userId })
         return res.status(StatusCodes.OK).send(tasks)
       } catch (error) {
         console.log(error)
@@ -70,9 +72,10 @@ class TaskRouter {
         validate({ schema, data: req.body })
 
         const { title, description, status } = req.body
-        console.log('creating task', title, description, status)
+        const userId = req.auth.userId
+        console.log('creating task', title, description, status, userId)
         const task = await this.taskService.createTask({
-          title, description, status
+          title, description, status, userId
         })
         return res.status(StatusCodes.CREATED).send(task)
       } catch (error) {
@@ -98,9 +101,10 @@ class TaskRouter {
 
         const { id } = req.params
         const { title, description, status } = req.body
-        console.log(`update task ${id}`, title, description, status)
+        const userId = req.auth.userId
+        console.log(`update task ${id}`, title, description, status, userId)
         const task = await this.taskService.updateTask({
-          id, title, description, status
+          taskId: id, title, description, status, userId
         })
         return res.status(StatusCodes.OK).send(task)
       } catch (error) {
@@ -120,7 +124,8 @@ class TaskRouter {
     return async (req, res, next) => {
       try {
         validate({ schema, data: req.params })
-        const task = await this.taskService.deleteTask({ taskId: req.params.id })
+        const userId = req.auth.userId
+        const task = await this.taskService.deleteTask({ taskId: req.params.id, userId })
         console.log('req.params', req.query)
         return res.status(StatusCodes.OK).send(task)
       } catch (error) {

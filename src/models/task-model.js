@@ -13,10 +13,10 @@ class TaskModel {
     return task
   }
 
-  async list ({ page, limit, lastId, filter = {} }) {
-    let query = {}
+  async list ({ page, limit, lastId, filter = {}, userId }) {
+    let query = { userId }
     if (lastId) {
-      query = { _id: { $gt: mongodb.ObjectId(lastId) } }
+      query = { _id: { $gt: mongodb.ObjectId(lastId), userId } }
     }
 
     const skip = lastId ? 0 : (page - 1) * limit

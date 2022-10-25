@@ -39,7 +39,6 @@ You will be creating an API for a task application.
 3. POST /tasks
 4. PATCH /tasks:/id
 5. DELETE /tasks/:id
-5. POST /login
 
 ## Model
 
@@ -56,6 +55,13 @@ Task Schema
 
 ## AuthN/Z
 JWT
+Please include in your Authorization header a valid Bearer token in order to work.
+
+For example
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJpYXQiOjE2NjY3MjQwNDl9.ep9boK4eno_WaejhIQdgmXJlc6ktKAVhmMGkl0Fk0A4
+```
+You could generate your own JWT token using the script `src/scripts/generate-token`
 
 ## Architecture
 

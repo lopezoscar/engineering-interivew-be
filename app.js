@@ -14,7 +14,6 @@ async function startRestServer () {
   try {
     const restServer = createRestServer({ db })
     restServer.listen(process.env.REST_SERVER_PORT, () => {
-      console.log(restServer)
       console.log(`🚀 Server ready on port ${process.env.REST_SERVER_PORT}`)
     })
   } catch (err) {
